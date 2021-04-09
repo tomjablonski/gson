@@ -58,9 +58,7 @@ public class PrintFormattingTest extends TestCase {
   }
 
   public void testJsonObjectWithNullValues() {
-    JsonObject obj = new JsonObject();
-    obj.addProperty("field1", "value1");
-    obj.addProperty("field2", (String) null);
+    JsonObject obj = getJsonObject();
     String json = gson.toJson(obj);
     assertTrue(json.contains("field1"));
     assertFalse(json.contains("field2"));
@@ -68,12 +66,17 @@ public class PrintFormattingTest extends TestCase {
 
   public void testJsonObjectWithNullValuesSerialized() {
     gson = new GsonBuilder().serializeNulls().create();
-    JsonObject obj = new JsonObject();
-    obj.addProperty("field1", "value1");
-    obj.addProperty("field2", (String) null);
+    JsonObject obj = getJsonObject();
     String json = gson.toJson(obj);
     assertTrue(json.contains("field1"));
     assertTrue(json.contains("field2"));
+  }
+  
+  private JsonObject getJsonObject() {
+	  JsonObject obj = new JsonObject();
+	  obj.addProperty("field1", "value1");
+	  obj.addProperty("field2", (String) null);
+	  return obj;
   }
 
   private static void assertContainsNoWhiteSpace(String str) {
