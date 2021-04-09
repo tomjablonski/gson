@@ -351,9 +351,7 @@ public class CustomTypeAdaptersTest extends TestCase {
       .registerTypeAdapter(StringHolder.class, new StringHolderTypeAdapter())
       .create();
     Type mapType = new TypeToken<Map<String,StringHolder>>() {}.getType();
-    StringHolder holder = new StringHolder("Jacob", "Tomaw");
-    Map<String, StringHolder> mapOfHolders = new HashMap<String, StringHolder>();
-    mapOfHolders.put("foo", holder);
+    Map<String, StringHolder> mapOfHolders = getMapOfHolders();
     String json = gson.toJson(mapOfHolders, mapType);
     assertTrue(json.contains("\"foo\":\"Jacob:Tomaw\""));
   }
@@ -363,11 +361,16 @@ public class CustomTypeAdaptersTest extends TestCase {
     Gson gson = new GsonBuilder()
       .registerTypeAdapter(StringHolder.class, new StringHolderTypeAdapter())
       .create();
-    StringHolder holder = new StringHolder("Jacob", "Tomaw");
-    Map<String, StringHolder> mapOfHolders = new HashMap<String, StringHolder>();
-    mapOfHolders.put("foo", holder);
+    Map<String, StringHolder> mapOfHolders = getMapOfHolders();
     String json = gson.toJson(mapOfHolders);
     assertTrue(json.contains("\"foo\":\"Jacob:Tomaw\""));
+  }
+  
+  private Map<String, StringHolder> getMapOfHolders(){
+	  StringHolder holder = new StringHolder("Jacob", "Tomaw");
+	  Map<String, StringHolder> mapOfHolders = new HashMap<String, StringHolder>();
+	  mapOfHolders.put("foo", holder);
+	  return mapOfHolders;
   }
 
   // Test created from Issue 70
