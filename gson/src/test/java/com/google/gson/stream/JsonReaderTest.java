@@ -593,15 +593,7 @@ public final class JsonReaderTest extends TestCase {
    */
   public void disabled_testPeekLargerThanLongMinValue() throws IOException {
     JsonReader reader = new JsonReader(reader("[-9223372036854775809]"));
-    reader.setLenient(true);
-    reader.beginArray();
-    assertEquals(NUMBER, reader.peek());
-    try {
-      reader.nextLong();
-      fail();
-    } catch (NumberFormatException expected) {
-    }
-    assertEquals(-9223372036854775809d, reader.nextDouble());
+    assertEquals(-9223372036854775809d, getJsonReaderUpdated(reader).nextDouble());
   }
 
   /**
@@ -618,15 +610,19 @@ public final class JsonReaderTest extends TestCase {
 
   public void testPeekMuchLargerThanLongMinValue() throws IOException {
     JsonReader reader = new JsonReader(reader("[-92233720368547758080]"));
-    reader.setLenient(true);
-    reader.beginArray();
-    assertEquals(NUMBER, reader.peek());
-    try {
-      reader.nextLong();
-      fail();
-    } catch (NumberFormatException expected) {
-    }
-    assertEquals(-92233720368547758080d, reader.nextDouble());
+    assertEquals(-92233720368547758080d, getJsonReaderUpdated(reader).nextDouble());
+  }
+  
+  public JsonReader getJsonReaderUpdated(JsonReader reader) throws IOException {
+	reader.setLenient(true);
+	reader.beginArray();
+	assertEquals(NUMBER, reader.peek());
+	try {
+		reader.nextLong();
+		fail();
+	} catch (NumberFormatException expected) {
+	}
+	return reader;
   }
 
   public void testQuotedNumberWithEscape() throws IOException {
