@@ -613,7 +613,7 @@ public final class JsonReaderTest extends TestCase {
     assertEquals(-92233720368547758080d, getJsonReaderUpdated(reader).nextDouble());
   }
   
-  public JsonReader getJsonReaderUpdated(JsonReader reader) throws IOException {
+  private JsonReader getJsonReaderUpdated(JsonReader reader) throws IOException {
 	reader.setLenient(true);
 	reader.beginArray();
 	assertEquals(NUMBER, reader.peek());
