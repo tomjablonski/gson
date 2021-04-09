@@ -1635,28 +1635,26 @@ public final class JsonReaderTest extends TestCase {
   }
 
   public void testStrictExtraCommasInMaps() throws IOException {
-    JsonReader reader = new JsonReader(reader("{\"a\":\"b\",}"));
-    reader.beginObject();
-    assertEquals("a", reader.nextName());
-    assertEquals("b", reader.nextString());
-    try {
-      reader.peek();
-      fail();
-    } catch (IOException expected) {
-    }
+	testStrictOrLenientExtraCommasInMaps(false);
   }
 
   public void testLenientExtraCommasInMaps() throws IOException {
-    JsonReader reader = new JsonReader(reader("{\"a\":\"b\",}"));
-    reader.setLenient(true);
-    reader.beginObject();
-    assertEquals("a", reader.nextName());
-    assertEquals("b", reader.nextString());
-    try {
-      reader.peek();
-      fail();
-    } catch (IOException expected) {
-    }
+	testStrictOrLenientExtraCommasInMaps(true);
+  }
+  
+  private void testStrictOrLenientExtraCommasInMaps(boolean withLeniant) throws IOException {
+	JsonReader reader = new JsonReader(reader("{\"a\":\"b\",}"));
+	if(withLeniant) {
+		reader.setLenient(true);
+	}
+	reader.beginObject();
+	assertEquals("a", reader.nextName());
+	assertEquals("b", reader.nextString());
+	try {
+		reader.peek();
+		fail();
+	} catch (IOException expected) {
+	}
   }
 
   private String repeat(char c, int count) {
