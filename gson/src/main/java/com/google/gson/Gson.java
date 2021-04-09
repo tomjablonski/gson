@@ -788,7 +788,7 @@ public final class Gson {
   /**
    * Return booleans values of oldLenient, oldHtmlSafe, and oldSerializeNulls in an array
    */
-  public boolean[] getOldsValues(JsonWriter writer) {
+  private boolean[] getOldsValues(JsonWriter writer) {
 	  boolean oldLenient = writer.isLenient();
 	  writer.setLenient(true);
 	  boolean oldHtmlSafe = writer.isHtmlSafe();
