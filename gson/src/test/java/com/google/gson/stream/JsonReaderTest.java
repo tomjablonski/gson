@@ -540,26 +540,23 @@ public final class JsonReaderTest extends TestCase {
 
   public void testLongLargerThanMaxLongThatWrapsAround() throws IOException {
     JsonReader reader = new JsonReader(reader("[22233720368547758070]"));
-    reader.setLenient(true);
-    reader.beginArray();
-    assertEquals(NUMBER, reader.peek());
-    try {
-      reader.nextLong();
-      fail();
-    } catch (NumberFormatException expected) {
-    }
+    testLongLarger(reader);
   }
 
   public void testLongLargerThanMinLongThatWrapsAround() throws IOException {
     JsonReader reader = new JsonReader(reader("[-22233720368547758070]"));
-    reader.setLenient(true);
-    reader.beginArray();
-    assertEquals(NUMBER, reader.peek());
-    try {
-      reader.nextLong();
-      fail();
-    } catch (NumberFormatException expected) {
-    }
+    testLongLarger(reader);
+  }
+  
+  private void testLongLarger(JsonReader reader) throws IOException {
+	reader.setLenient(true);
+	reader.beginArray();
+	assertEquals(NUMBER, reader.peek());
+	try {
+	reader.nextLong();
+	fail();
+	} catch (NumberFormatException expected) {
+	}
   }
   
   /**
