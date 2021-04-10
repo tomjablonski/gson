@@ -72,29 +72,27 @@ public final class JsonReaderTest extends TestCase {
     assertEquals(JsonToken.END_DOCUMENT, reader.peek());
   }
 
-  public void testSkipArray() throws IOException {
-    JsonReader reader = new JsonReader(reader(
-        "{\"a\": [\"one\", \"two\", \"three\"], \"b\": 123}"));
-    reader.beginObject();
-    assertEquals("a", reader.nextName());
-    reader.skipValue();
-    assertEquals("b", reader.nextName());
-    assertEquals(123, reader.nextInt());
-    reader.endObject();
-    assertEquals(JsonToken.END_DOCUMENT, reader.peek());
+  public void testSkipArray() throws Exception {
+	  testBothSkipArray(false);
   }
 
   public void testSkipArrayAfterPeek() throws Exception {
-    JsonReader reader = new JsonReader(reader(
-        "{\"a\": [\"one\", \"two\", \"three\"], \"b\": 123}"));
-    reader.beginObject();
-    assertEquals("a", reader.nextName());
-    assertEquals(BEGIN_ARRAY, reader.peek());
-    reader.skipValue();
-    assertEquals("b", reader.nextName());
-    assertEquals(123, reader.nextInt());
-    reader.endObject();
-    assertEquals(JsonToken.END_DOCUMENT, reader.peek());
+	  testBothSkipArray(true);
+  }
+  
+  private void testBothSkipArray(boolean withPeek) throws Exception {
+	JsonReader reader = new JsonReader(reader(
+		"{\"a\": [\"one\", \"two\", \"three\"], \"b\": 123}"));
+	reader.beginObject();
+	assertEquals("a", reader.nextName());
+	if(withPeek) {
+		assertEquals(BEGIN_ARRAY, reader.peek());		
+	}	
+	reader.skipValue();
+	assertEquals("b", reader.nextName());
+	assertEquals(123, reader.nextInt());
+	reader.endObject();
+	assertEquals(JsonToken.END_DOCUMENT, reader.peek());  
   }
 
   public void testSkipTopLevelObject() throws Exception {
