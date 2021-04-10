@@ -193,25 +193,23 @@ public class ParameterizedTypesTest extends TestCase {
   }
 
   public void testVariableTypeDeserialization() throws Exception {
-    Type typeOfSrc = new TypeToken<ObjectWithTypeVariables<Integer>>() {}.getType();
     ObjectWithTypeVariables<Integer> objToSerialize =
         new ObjectWithTypeVariables<Integer>(0, null, null, null, null, null);
-    String json = gson.toJson(objToSerialize, typeOfSrc);
-    ObjectWithTypeVariables<Integer> objAfterDeserialization = gson.fromJson(json, typeOfSrc);
-
-    assertEquals(objAfterDeserialization.getExpectedJson(), json);
+    testBothVariableTypeDeserialization(objToSerialize);
   }
 
   public void testVariableTypeArrayDeserialization() throws Exception {
     Integer[] array = { 1, 2, 3 };
-
-    Type typeOfSrc = new TypeToken<ObjectWithTypeVariables<Integer>>() {}.getType();
     ObjectWithTypeVariables<Integer> objToSerialize =
         new ObjectWithTypeVariables<Integer>(null, array, null, null, null, null);
-    String json = gson.toJson(objToSerialize, typeOfSrc);
-    ObjectWithTypeVariables<Integer> objAfterDeserialization = gson.fromJson(json, typeOfSrc);
-
-    assertEquals(objAfterDeserialization.getExpectedJson(), json);
+    testBothVariableTypeDeserialization(objToSerialize);
+  }
+  
+  private void testBothVariableTypeDeserialization(ObjectWithTypeVariables<Integer> objToSerialize) throws Exception {
+	Type typeOfSrc = new TypeToken<ObjectWithTypeVariables<Integer>>() {}.getType();
+	String json = gson.toJson(objToSerialize, typeOfSrc);
+	ObjectWithTypeVariables<Integer> objAfterDeserialization = gson.fromJson(json, typeOfSrc);
+	assertEquals(objAfterDeserialization.getExpectedJson(), json);
   }
 
   public void testParameterizedTypeWithVariableTypeDeserialization() throws Exception {
