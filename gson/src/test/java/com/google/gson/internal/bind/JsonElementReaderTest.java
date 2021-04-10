@@ -27,12 +27,7 @@ public final class JsonElementReaderTest extends TestCase {
 
   public void testNumbers() throws IOException {
     JsonElement element = JsonParser.parseString("[1, 2, 3]");
-    JsonTreeReader reader = new JsonTreeReader(element);
-    reader.beginArray();
-    assertEquals(1, reader.nextInt());
-    assertEquals(2L, reader.nextLong());
-    assertEquals(3.0, reader.nextDouble());
-    reader.endArray();
+    testNumbersOrNumbersFromStrings(element);
   }
 
   public void testLenientNansAndInfinities() throws IOException {
@@ -74,12 +69,16 @@ public final class JsonElementReaderTest extends TestCase {
 
   public void testNumbersFromStrings() throws IOException {
     JsonElement element = JsonParser.parseString("[\"1\", \"2\", \"3\"]");
-    JsonTreeReader reader = new JsonTreeReader(element);
-    reader.beginArray();
-    assertEquals(1, reader.nextInt());
-    assertEquals(2L, reader.nextLong());
-    assertEquals(3.0, reader.nextDouble());
-    reader.endArray();
+    testNumbersOrNumbersFromStrings(element);
+  }
+  
+  private void testNumbersOrNumbersFromStrings(JsonElement element) throws IOException {
+	JsonTreeReader reader = new JsonTreeReader(element);
+	reader.beginArray();
+	assertEquals(1, reader.nextInt());
+	assertEquals(2L, reader.nextLong());
+	assertEquals(3.0, reader.nextDouble());
+	reader.endArray();
   }
 
   public void testStringsFromNumbers() throws IOException {
