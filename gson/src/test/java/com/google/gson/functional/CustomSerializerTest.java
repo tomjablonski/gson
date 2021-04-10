@@ -58,10 +58,7 @@ public class CustomSerializerTest extends TestCase {
          .registerTypeAdapter(Base.class, new BaseSerializer())
          .registerTypeAdapter(Sub.class, new SubSerializer())
          .create();
-     ClassWithBaseField target = new ClassWithBaseField(new Sub());
-     JsonObject json = (JsonObject) gson.toJsonTree(target);
-     JsonObject base = json.get("base").getAsJsonObject();
-     assertEquals(SubSerializer.NAME, base.get(Base.SERIALIZER_KEY).getAsString());
+     testBothClassSerializerInvokedForBaseClassFieldsHoldingSubClassInstances(gson, true);
    }
 
    public void testSubClassSerializerInvokedForBaseClassFieldsHoldingArrayOfSubClassInstances() {
@@ -82,10 +79,18 @@ public class CustomSerializerTest extends TestCase {
      Gson gson = new GsonBuilder()
          .registerTypeAdapter(Base.class, new BaseSerializer())
          .create();
-     ClassWithBaseField target = new ClassWithBaseField(new Sub());
-     JsonObject json = (JsonObject) gson.toJsonTree(target);
-     JsonObject base = json.get("base").getAsJsonObject();
-     assertEquals(BaseSerializer.NAME, base.get(Base.SERIALIZER_KEY).getAsString());
+     testBothClassSerializerInvokedForBaseClassFieldsHoldingSubClassInstances(gson, false);
+   }
+   
+   private void testBothClassSerializerInvokedForBaseClassFieldsHoldingSubClassInstances(Gson gson, boolean withSub) {
+	ClassWithBaseField target = new ClassWithBaseField(new Sub());
+	JsonObject json = (JsonObject) gson.toJsonTree(target);
+	JsonObject base = json.get("base").getAsJsonObject();
+	if(withSub) {
+		assertEquals(SubSerializer.NAME, base.get(Base.SERIALIZER_KEY).getAsString());		
+	} else {
+		assertEquals(BaseSerializer.NAME, base.get(Base.SERIALIZER_KEY).getAsString());
+	}
    }
 
    public void testSerializerReturnsNull() {
