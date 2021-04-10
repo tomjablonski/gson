@@ -328,13 +328,7 @@ public class DefaultTypeAdaptersTest extends TestCase {
   }
 
   public void testDefaultDateSerialization() {
-    Date now = new Date(1315806903103L);
-    String json = gson.toJson(now);
-    if (JavaVersion.isJava9OrLater()) {
-      assertEquals("\"Sep 11, 2011, 10:55:03 PM\"", json);
-    } else {
-      assertEquals("\"Sep 11, 2011 10:55:03 PM\"", json);
-    }
+	testBothDefaultDateSerialization(false);
   }
 
   public void testDefaultDateDeserialization() {
@@ -402,14 +396,23 @@ public class DefaultTypeAdaptersTest extends TestCase {
   }
 
   public void testDefaultDateSerializationUsingBuilder() throws Exception {
-    Gson gson = new GsonBuilder().create();
-    Date now = new Date(1315806903103L);
-    String json = gson.toJson(now);
-    if (JavaVersion.isJava9OrLater()) {
-      assertEquals("\"Sep 11, 2011, 10:55:03 PM\"", json);
-    } else {
-      assertEquals("\"Sep 11, 2011 10:55:03 PM\"", json);
-    }
+	testBothDefaultDateSerialization(true);
+  }
+  
+  private void testBothDefaultDateSerialization(boolean withBuilder) {
+	Date now = new Date(1315806903103L);
+	String json;
+	if(withBuilder) {
+		Gson gson = new GsonBuilder().create();
+		json = gson.toJson(now);	
+	} else {
+		json = gson.toJson(now);		
+	}	
+	if (JavaVersion.isJava9OrLater()) {
+		assertEquals("\"Sep 11, 2011, 10:55:03 PM\"", json);
+	} else {
+		assertEquals("\"Sep 11, 2011 10:55:03 PM\"", json);
+	}
   }
 
   public void testDefaultDateDeserializationUsingBuilder() throws Exception {
