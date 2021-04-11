@@ -29,19 +29,13 @@ import com.google.gson.common.MoreAsserts;
 public final class LinkedTreeMapTest extends TestCase {
 
   public void testIterationOrder() {
-    LinkedTreeMap<String, String> map = new LinkedTreeMap<String, String>();
-    map.put("a", "android");
-    map.put("c", "cola");
-    map.put("b", "bbq");
+	LinkedTreeMap<String, String> map = initLinkedTreeMap();
     assertIterationOrder(map.keySet(), "a", "c", "b");
     assertIterationOrder(map.values(), "android", "cola", "bbq");
   }
 
   public void testRemoveRootDoesNotDoubleUnlink() {
-    LinkedTreeMap<String, String> map = new LinkedTreeMap<String, String>();
-    map.put("a", "android");
-    map.put("c", "cola");
-    map.put("b", "bbq");
+	LinkedTreeMap<String, String> map = initLinkedTreeMap();
     Iterator<Map.Entry<String,String>> it = map.entrySet().iterator();
     it.next();
     it.next();
@@ -115,13 +109,18 @@ public final class LinkedTreeMapTest extends TestCase {
   }
 
   public void testClear() {
-    LinkedTreeMap<String, String> map = new LinkedTreeMap<String, String>();
-    map.put("a", "android");
-    map.put("c", "cola");
-    map.put("b", "bbq");
+    LinkedTreeMap<String, String> map = initLinkedTreeMap();
     map.clear();
     assertIterationOrder(map.keySet());
     assertEquals(0, map.size());
+  }
+  
+  private LinkedTreeMap<String, String> initLinkedTreeMap(){
+	LinkedTreeMap<String, String> map = new LinkedTreeMap<String, String>();
+	map.put("a", "android");
+	map.put("c", "cola");
+	map.put("b", "bbq");
+	return map;	  
   }
 
   public void testEqualsAndHashCode() throws Exception {
